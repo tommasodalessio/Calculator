@@ -1,44 +1,63 @@
-/* create the function for the calculator 
-we need function for: 
-    -add 
-    -subtract 
-    -multiply 
-    -divide 
-    -operation: a function that takes two parameter and an operator a do the math recalling the above function
-*/
+class Calculator {
+    constructor(previousOperandTextElement, currentOperandTextElement){
+        this.previousOperandTextElement = previousOperandTextElement
+        this.currentOperandTextElement = currentOperandTextElement
+        this.clear()
+    }
 
-function add (operator1, operator2) {
-    operator1 = Number(operator1);
-    operator2 = Number(operator2);
-    return operator1 + operator2;
+    clear() {
+        this.currentOperand = ''
+        this.previousOperand = ''
+        this.operation = undefined
+    }
+
+    delete() {
+
+    }
+
+    appendNumber(number) {
+        if (number === '.' && this.currentOperand.includes('.')) return
+        this.currentOperand = this.currentOperand.toString() + number.toString()
+    }
+
+    choseOperation(operation) {
+        this.operation = operation
+        this.previousOperand = this.currentOperand
+        this.currentOperand = ''
+    }
+
+    compute(){
+
+    }
+
+    updateDisplay() {
+        this.currentOperandTextElement.innerText = this.currentOperand
+        this.previousOperandTextElement.innerText = this.previousOperand
+
+
+    }
 }
 
-function subtract (operator1, operator2) {
-    operator1 = Number(operator1);
-    operator2 = Number(operator2);
-    return operator1 - operator2;
-}
+const numberButtons = document.querySelectorAll('[data-number]');
+const operationButtons = document.querySelectorAll('[data-operation]');
+const equalButton = document.querySelector('[data-equals]');
+const deletButton = document.querySelector('[data-delete]');
+const allClearButton = document.querySelector('[data-allClear]');
+const previousOperandTextElement = document.querySelector('[data-previusOperand]');
+const currentOperandTextElement  = document.querySelector('[data-currentOperand]');
 
-function multiply (operator1, operator2) {
-    operator1 = Number(operator1);
-    operator2 = Number(operator2);
-    return operator1 * operator2;
-}
+const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement)
 
-function divide (operator1, operator2) {
-    operator1 = Number(operator1);
-    operator2 = Number(operator2);
-    return operator1 / operator2;
-}
+numberButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        calculator.appendNumber(button.innerText)
+        calculator.updateDisplay()
+    })
+})
 
-function operation (operator1, operator2, sign) {
-    if(sign == "plus") return add(operator1, operator2);
-    if(sign == "minus") return subtract(operator1, operator2);
-    if(sign == "times") return multiply(operator1, operator2);
-    if(sign == "divide") return divide(operator1, operator2);
-}
-
-console.log(operation(5, 5, "plus"));
-console.log(operation(5, 5, "minus"));
-console.log(operation(5, 5, "times"));
-console.log(operation(5, 5, "divide"));
+operationButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        calculator.choseOperation(button.innerText)
+        calculator.updateDisplay()
+    })
+})
